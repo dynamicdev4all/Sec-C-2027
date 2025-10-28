@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
     
     <%
-    String name = (String)session.getAttribute("userName");    
+    String name = (String)session.getAttribute("userName"); 
+    if(name == null){
+    	response.sendRedirect("login.html");
+    }
     %>
 <!DOCTYPE html>
 <html>
