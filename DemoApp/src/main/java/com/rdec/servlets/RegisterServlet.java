@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.awt.image.DataBufferShort;
 import java.io.IOException;
+import java.sql.DatabaseMetaData;
 
+import com.rdec.database.DatabaseConnection;
 import com.rdec.services.OTPService;
 
 /**
@@ -36,17 +39,25 @@ public class RegisterServlet extends HttpServlet {
 		String emailAdd = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		int generateOTP = (int)((Math.random()* 900000) + 100000);
+		boolean saveDataStatus = DatabaseConnection.insertUserData(firstName, lastName, Integer.parseInt(phoneNo), emailAdd, password);
 		
-		boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, generateOTP);
-		
-		if(OTPSentStatus) {
-			HttpSession session = request.getSession();
-			session.setAttribute("sentOTP", generateOTP);
-			response.sendRedirect("otp_verify.html");
+		if(saveDataStatus) {
+			int generateOTP = (int)((Math.random()* 900000) + 100000);
+			
+			boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, generateOTP);
+			
+			if(OTPSentStatus) {
+				HttpSession session = request.getSession();
+				session.setAttribute("sentOTP", generateOTP);
+				response.sendRedirect("otp_verify.html");
+			}else {
+				System.out.println("Cannot send OTP");
+			}
 		}else {
-			System.out.println("Cannot send OTP");
+			System.out.println("Data not saved in DB");
 		}
+		
+		
 
 
 	}
