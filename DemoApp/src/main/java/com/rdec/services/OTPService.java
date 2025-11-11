@@ -14,8 +14,8 @@ import jakarta.mail.internet.MimeMessage;
 
 public class OTPService {
 	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
-		String sender = "";
-		String senderPassword = "";
+		String sender = "piebytwo014@gmail.com";
+		String senderPassword = "zvwhwavugetyxeho";
 		
 		Properties emailProperties = new Properties();
 		emailProperties.put("mail.smtp.host", "smtp.gmail.com");

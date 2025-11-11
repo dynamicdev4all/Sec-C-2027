@@ -43,12 +43,11 @@ public class RegisterServlet extends HttpServlet {
 		
 		if(saveDataStatus) {
 			int generateOTP = (int)((Math.random()* 900000) + 100000);
-			
 			boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, generateOTP);
-			
 			if(OTPSentStatus) {
 				HttpSession session = request.getSession();
 				session.setAttribute("sentOTP", generateOTP);
+				session.setAttribute("email", emailAdd);
 				response.sendRedirect("otp_verify.html");
 			}else {
 				System.out.println("Cannot send OTP");

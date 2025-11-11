@@ -31,15 +31,25 @@ public class DatabaseConnection {
 	static MongoCollection<Document> c = database.getCollection("users");
 	
 	
-	public static void verifyUser() {
-		//first get the data from database
-		//then do the update part
-		// then re-insert the data into the database
+	public static boolean verifyUser(String email) {
+		Document userSearch = new Document("userEmail", email);
+		Document userFound = c.find(userSearch).first();
+		if(userFound != null) {
+			Document updatedUser = new Document("$set", new Document("isVerified", true)); 
+			c.findOneAndUpdate(userFound, updatedUser);
+			return true;
+		}
+		return false;
 	}
 	
-	
-	
-	
+	public static Document loginUser(String email) {
+		Document userSearch = new Document("userEmail", email);
+		Document userFound = c.find(userSearch).first();
+		if(userFound != null) {
+			return userFound;
+		}
+		return null;
+	}
 	
 	
 	public static boolean insertUserData(String fName, String lName, int phone, String userMail ,String userPwd) {

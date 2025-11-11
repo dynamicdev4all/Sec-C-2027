@@ -6,8 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import shadow.org.bson.Document;
 
 import java.io.IOException;
+
+import com.rdec.database.DatabaseConnection;
 
 /**
  * Servlet implementation class LoginServlet
@@ -26,21 +29,31 @@ public class LoginServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("This is the data from Login Page");
 		String emailAdd = request.getParameter("email");
 		String password = request.getParameter("password");
+		
+		Document loginUser = DatabaseConnection.loginUser(emailAdd);
+		if(loginUser != null) {
+			if(loginUser.getString("userEmail").equals(emailAdd) && loginUser.getString("userPassword").equals(password) && loginUser.getBoolean("isVerified")) {
+//				response.sendRedirect("home_page.html");
+				HttpSession session = request.getSession();
+				String name = loginUser.getString("firstName") + " " + loginUser.getString("lastName");
+				session.setAttribute("userName", name);
+				response.sendRedirect("home.jsp");			
+			}else if(loginUser.getString("userEmail").equals(emailAdd) && loginUser.getString("userPassword").equals(password) && !loginUser.getBoolean("isVerified")) {
+				System.out.println("The account is not verified, please retry");
+			}
+			else {
+				System.out.println("Your password is invalid");
+			}
+		}else {
+			System.out.println("No user Found");
+		}
 		//this is not the correct way to use conditions
 //		if(emailAdd.equals("admin@rdec.in") && password.equals("123456")) {
 //			response.sendRedirect("home_page.html");
 //		}	
-		if("admin@rdec.in".equals(emailAdd) && "123456".equals(password)) {
-//			response.sendRedirect("home_page.html");
-			HttpSession session = request.getSession();
-			session.setAttribute("userName", "Deepak");
-			response.sendRedirect("home.jsp");			
-		}else {
-			System.out.println("Your email or password is invalid");
-		}
+		
 
 	}
 
