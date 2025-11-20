@@ -12,11 +12,16 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.rdec.config.SecretReader;
+
 import shadow.org.bson.Document;
 
 public class DatabaseConnection {
+	static String DB_USERNAME = SecretReader.secretReader("MONGO_DB_USERNAME", "en", "US");
+	static String DB_PASSWORD = SecretReader.secretReader("MONGO_DB_PASSWORD", "en", "US");
+	static String APP_ID = SecretReader.secretReader("MONGO_APP_ID", "en", "US");
 	
-	static String connectionString = "mongodb+srv://piebytwo014:piebytwo014@cluster0.f6xlgnz.mongodb.net/?appName=Cluster0";
+	static String connectionString = "mongodb+srv://"+DB_USERNAME+":"+DB_PASSWORD+"@cluster0."+APP_ID+".mongodb.net/?appName=Cluster0";
 
     static ServerApi serverApi = ServerApi.builder()
              .version(ServerApiVersion.V1)

@@ -3,6 +3,8 @@ package com.rdec.services;
 
 import java.util.Properties;
 
+import com.rdec.config.SecretReader;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -14,8 +16,8 @@ import jakarta.mail.internet.MimeMessage;
 
 public class OTPService {
 	public static boolean sendRegisterOTP(String to, String userName, int OTP) {
-		String sender = "piebytwo014@gmail.com";
-		String senderPassword = "zvwhwavugetyxeho";
+		String sender = SecretReader.secretReader("OTP_EMAIL", "en", "US");
+		String senderPassword = SecretReader.secretReader("OTP_EMAIL_PASSWORD", "en", "US");
 		
 		Properties emailProperties = new Properties();
 		emailProperties.put("mail.smtp.host", "smtp.gmail.com");
