@@ -11,6 +11,7 @@ import java.awt.image.DataBufferShort;
 import java.io.IOException;
 import java.sql.DatabaseMetaData;
 
+import com.app.util.JWTUtil;
 import com.rdec.database.DatabaseConnection;
 import com.rdec.services.OTPService;
 
@@ -43,7 +44,9 @@ public class RegisterServlet extends HttpServlet {
 		
 		if(saveDataStatus) {
 			int generateOTP = (int)((Math.random()* 900000) + 100000);
-			boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, generateOTP);
+			String token = JWTUtil.createToken(emailAdd, generateOTP);
+//			boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, generateOTP);
+			boolean OTPSentStatus = OTPService.sendRegisterOTP(emailAdd, firstName + " " + lastName, token);
 			if(OTPSentStatus) {
 				HttpSession session = request.getSession();
 				session.setAttribute("sentOTP", generateOTP);
