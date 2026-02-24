@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,22 +13,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.secc.app.models.User;
+import com.secc.app.services.UserService;
 
 @RestController
 public class UserController {
 	
-	Map<Integer, User> db = new HashMap<Integer, User>();
-	int current = 1;
+	
+	@Autowired
+	UserService service;
+	
+	
 	//Create - Register
 	@PostMapping("/user/register")
 	public String createUser(@RequestBody User newUser) {
-		try {
-			db.put(current, newUser);
-			current ++;
-			return "Registration Successful";
-		} catch (Exception e) {
-			return "Registration Failed";
+		User user = service.register(newUser);
+		if(user != null) {
+			return "Registration Successful.";
 		}
+		return "Registration Failed.";
 	}
 	
 	//Read - Show All
@@ -36,16 +39,12 @@ public class UserController {
 //		ArrayList<User> list = new ArrayList<User>();
 //		list.addAll(db.values());
 //		return list;
-		return new ArrayList<User>(db.values());
+		return service.showAll();
 	}
 	//Read - Show One
 	@GetMapping("/user/show_one/{id}")
 	public User showOne(@PathVariable int id) {
-		try {
-				return db.get(id);
-		} catch (Exception e) {
-			return null;
-		}
-		
+	
+		return service.showOne(id);
 	}
 }
