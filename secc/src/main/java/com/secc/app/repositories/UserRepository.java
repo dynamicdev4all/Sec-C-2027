@@ -23,6 +23,47 @@ public class UserRepository {
 	}
 	
 	
+	public Map<String, String> userLogin(String email, String pass, String key) {
+		Map<String, String> responseMap = new HashMap<String, String>();;
+		try {
+			
+			User user = db.get(key);
+			if(user == null) {
+				responseMap.put("status_code", "404");
+				responseMap.put("msg", "No Account Found");
+				return responseMap;
+			}
+			else {
+				if(user.getBanned() == true) {
+					responseMap.put("status_code", "403");
+					responseMap.put("msg", "The Account is Banned");
+					return responseMap;
+				}else {
+					if(user.getEmail() == email && user.getPass() == pass) {
+						responseMap.put("status_code", "200");
+						responseMap.put("msg", "Login Success");
+						return responseMap;
+					}
+					else {
+						responseMap.put("status_code", "401");
+						responseMap.put("msg", "Login FailedM");
+						return responseMap;
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			db.put(newUser.getId(), newUser);
+			return newUser;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
 	public ArrayList<User> showAll() {
 		return new ArrayList<User>(db.values());
 	}

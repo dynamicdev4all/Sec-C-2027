@@ -1,11 +1,35 @@
 package com.secc.app.models;
 
 public class User {
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public boolean isBanned() {
+		return isBanned;
+	}
+	public boolean getBanned() {
+		return isBanned;
+	}
+	public void setBanned(boolean isBanned) {
+		this.isBanned = isBanned;
+	}
 	private int id;
 	private String name;
 	private long phone;
 	private String deliveryAddress;
 	private String upi;
+	private boolean isBanned;
+	private String email;
+	private String pass;
 	
 	public int getId() {
 		return id;

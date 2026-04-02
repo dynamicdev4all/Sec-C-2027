@@ -1,6 +1,7 @@
 package com.secc.app.services;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class UserService {
 	@Autowired
 	UserRepository repo;
 	public User register(User newUser) {
+		return repo.register(newUser);
+	}
+	
+	public User login(String email, String pass) {
 		return repo.register(newUser);
 	}
 	
