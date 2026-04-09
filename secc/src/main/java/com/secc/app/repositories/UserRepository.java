@@ -11,7 +11,7 @@ import com.secc.app.models.User;
 
 @Repository
 public class UserRepository {
-	Map<Integer, User> db = new HashMap<Integer, User>();
+	public Map<Integer, User> db = new HashMap<Integer, User>();
 	int current = 1;
 	public User register(User newUser) {
 		try {

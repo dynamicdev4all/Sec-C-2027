@@ -1,8 +1,10 @@
 package com.secc.app.controllers;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.PatchExchange;
 
 import com.secc.app.dto.AdminLoginDTO;
+import com.secc.app.dto.UserDataDto;
 import com.secc.app.models.Admin;
 import com.secc.app.models.User;
 import com.secc.app.services.AdminService;
@@ -25,7 +28,7 @@ public class AdminController {
 	//Create - Register
 			@PostMapping("/admin/login")
 			public String loginAdmin(@RequestBody AdminLoginDTO adminLoginDTO) {
-				Admin admin = service.login();
+				Admin admin = service.login(adminLoginDTO);
 				if(user != null) {
 					return "Registration Successful.";
 				}
@@ -43,5 +46,10 @@ public class AdminController {
 		}else {
 			return "The accound has been un-banned.";
 		}
+	}
+	
+	@GetMapping("/admin/getAllUsers")
+	public ArrayList<UserDataDto> showAllUsers() {
+		return service.showAllUsers();
 	}
 }
